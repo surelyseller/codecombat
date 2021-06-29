@@ -6,6 +6,7 @@ utils = require 'core/utils'
 ClassroomSettingsModal = require 'views/courses/ClassroomSettingsModal'
 InviteToClassroomModal = require 'views/courses/InviteToClassroomModal'
 ActivateLicensesModal = require 'views/courses/ActivateLicensesModal'
+PrepaidActivateCodesModal = require 'views/courses/PrepaidActivateCodesModal'
 EditStudentModal = require 'views/teachers/EditStudentModal'
 RemoveStudentModal = require 'views/courses/RemoveStudentModal'
 CoursesNotAssignedModal = require './CoursesNotAssignedModal'
@@ -58,6 +59,7 @@ module.exports = class TeacherClassView extends RootView
     'click .assign-to-selected-students': 'onClickBulkAssign'
     'click .remove-from-selected-students': 'onClickBulkRemoveCourse'
     'click .export-student-progress-btn': 'onClickExportStudentProgress'
+    'click .create-activate-codes-btn': 'onClickCreateActivateCodes'
     'click .select-all': 'onClickSelectAll'
     'click .student-checkbox': 'onClickStudentCheckbox'
     'keyup #student-search': 'onKeyPressStudentSearch'
@@ -574,6 +576,11 @@ module.exports = class TeacherClassView extends RootView
     csvContent = csvContent.substring(0, csvContent.length - 1)
     file = new Blob([csvContent], {type: 'text/csv;charset=utf-8'})
     window.saveAs(file, 'CodeCombat.csv')
+
+  onClickCreateActivateCodes: (e) ->
+    modal = new PrepaidActivateCodesModal({}, @classroom.get('_id'))
+    @openModalView(modal)
+       
 
   onClickAssignStudentButton: (e) ->
     return unless me.id is @classroom.get('ownerID') # May be viewing page as admin

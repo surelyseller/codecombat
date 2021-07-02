@@ -6,7 +6,8 @@ utils = require 'core/utils'
 ClassroomSettingsModal = require 'views/courses/ClassroomSettingsModal'
 InviteToClassroomModal = require 'views/courses/InviteToClassroomModal'
 ActivateLicensesModal = require 'views/courses/ActivateLicensesModal'
-PrepaidActivateCodesModal = require 'views/courses/PrepaidActivateCodesModal'
+ManageLicenseModal = require 'views/courses/ManageLicenseModal'
+PrepaidActivationCodesModal = require 'views/courses/PrepaidActivationCodesModal'
 EditStudentModal = require 'views/teachers/EditStudentModal'
 RemoveStudentModal = require 'views/courses/RemoveStudentModal'
 CoursesNotAssignedModal = require './CoursesNotAssignedModal'
@@ -59,7 +60,7 @@ module.exports = class TeacherClassView extends RootView
     'click .assign-to-selected-students': 'onClickBulkAssign'
     'click .remove-from-selected-students': 'onClickBulkRemoveCourse'
     'click .export-student-progress-btn': 'onClickExportStudentProgress'
-    'click .create-activate-codes-btn': 'onClickCreateActivateCodes'
+    'click .create-activation-codes-btn': 'onClickCreateActivationCodes'
     'click .select-all': 'onClickSelectAll'
     'click .student-checkbox': 'onClickStudentCheckbox'
     'keyup #student-search': 'onKeyPressStudentSearch'
@@ -497,7 +498,7 @@ module.exports = class TeacherClassView extends RootView
 
   enrollStudents: (selectedUsers) ->
     return unless me.id is @classroom.get('ownerID') # May be viewing page as admin
-    modal = new ActivateLicensesModal { @classroom, selectedUsers, users: @students }
+    modal = new ManageLicenseModal { @classroom, selectedUsers, users: @students }
     @openModalView(modal)
     modal.once 'redeem-users', (enrolledUsers) =>
       enrolledUsers.each (newUser) =>
@@ -577,8 +578,8 @@ module.exports = class TeacherClassView extends RootView
     file = new Blob([csvContent], {type: 'text/csv;charset=utf-8'})
     window.saveAs(file, 'CodeCombat.csv')
 
-  onClickCreateActivateCodes: (e) ->
-    modal = new PrepaidActivateCodesModal({}, @classroom.get('_id'))
+  onClickCreateActivationCodes: (e) ->
+    modal = new PrepaidActivationCodesModal({}, @classroom.get('_id'))
     @openModalView(modal)
        
 
